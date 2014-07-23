@@ -92,7 +92,7 @@ DEF FT0OR GlobalField {type SFFloat FT0OR 0 }
 DEF FT0OR2 GlobalField {type SFFloat FT0OR2 0 }
 DEF FT0ORIGIN GlobalField {type SFVec3f FT0ORIGIN 0 0 0 }
 
-#@ Figure Type 1: Triangle
+#@ Figure Type 1: Equilateral Triangle
 DEF FT1COL GlobalField {type SFColor FT1COL 100 100 100}
 DEF FT1SIZ GlobalField {type SFFloat FT1SIZ 60}
 DEF FT1HEIGHT GlobalField {type SFFloat FT1HEIGHT 0}
@@ -275,7 +275,7 @@ Separator {
 				}
 				Rect {
 					width	= USE FT0LEN.FT0LEN
-					height= USE FT0WID.FT0WID
+					height  = USE FT0WID.FT0WID
 					antialiasing = USE ANTIALIAS.ANTIALIAS
 				}
 		    }
@@ -307,28 +307,10 @@ Separator {
 					expression["oA = (a==0?A:B)"]
 					}.oA
 			}
-			Coordinate3 {
-				  point = Concatenate {
-				    type MFVec3f
-				    input0 = Calculator {
-				      a = USE FT1SIZ.FT1SIZ
-					b = USE FT1HEIGHT.FT1HEIGHT
-				      expression["oA[1]=a/2.0","oA[2]=b"]
-				    }.oA
-				    input1 = Calculator {
-				      a = USE FT1SIZ.FT1SIZ
-					b = USE FT1HEIGHT.FT1HEIGHT
-	expression["oA[0]=(-a/2.0)*cos(30*0.0174532925)","oA[1]=(-a/2.0)*sin(30*0.0174532925)","oA[2]=b"]
-				    }.oA
-				    input2 = Calculator {
-				      a = USE FT1SIZ.FT1SIZ
-					b = USE FT1HEIGHT.FT1HEIGHT
-	expression["oA[0]=(a/2.0)*cos(30*0.0174532925)","oA[1]=(-a/2.0)*sin(30*0.0174532925)","oA[2]=b"]
-				    }.oA
-				  }.output
-				}
-			IndexedTriangleStripSet {
-				coordIndex [0,1,2,-1]
+			ELTriangle {
+				width = USE FT1SIZ.FT1SIZ
+				height = USE FT1SIZ.FT1SIZ
+				antialiasing = USE ANTIALIAS.ANTIALIAS
 			}
 		    }
 		  }
