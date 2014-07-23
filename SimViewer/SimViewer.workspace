@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="SimViewer" Database="">
+  <Project Name="SimViewer" Path="SimViewer.project" Active="Yes"/>
+  <Project Name="SimClient" Path="../SimClient/SimClient.project"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="SimViewer" ConfigName="Debug"/>
+      <Project Name="SimClient" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="SimViewer" ConfigName="Release"/>
+      <Project Name="SimClient" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

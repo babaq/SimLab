@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="RPCServer" Database="">
+  <Project Name="RPCServer" Path="RPCServer.project" Active="Yes"/>
+  <Project Name="RPCClient" Path="../RPCClient/RPCClient.project"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="RPCServer" ConfigName="Debug"/>
+      <Project Name="RPCClient" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="RPCServer" ConfigName="Release"/>
+      <Project Name="RPCClient" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>
