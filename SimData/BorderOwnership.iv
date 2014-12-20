@@ -45,13 +45,13 @@ DEF UF-TABLEN1          GlobalField { type SFFloat TABLEN1          40 }
 DEF UF-TABWID1          GlobalField { type SFFloat TABWID1          40 }
 DEF UF-TABANGLEWID      GlobalField { type SFFloat TABANGLEWID      0  }
 DEF UF-COL              GlobalField { type SFColor COL        25 25 25 }
-DEF UF-OR               GlobalField { type SFFloat OR               90 }
+DEF UF-OR               GlobalField { type SFFloat OR               0 }
 DEF UF-BLINK            GlobalField { type SFShort BLINK            0 }
 DEF UF-BLINKFREQ        GlobalField { type SFFloat BLINKFREQ        2 }
 DEF UF-SHUTTLETYPE      GlobalField { type SFShort SHUTTLETYPE      0 }
 DEF UF-SHUTTLEAMP       GlobalField { type SFFloat SHUTTLEAMP       30 }
 DEF UF-SHUTTLEFREQ      GlobalField { type SFFloat SHUTTLEFREQ      1 }
-DEF UF-ORIGIN           GlobalField { type SFVec3f ORIGIN      0 1 0   }
+DEF UF-ORIGIN           GlobalField { type SFVec3f ORIGIN      0 -1 0   }
 DEF UF-RIDGE            GlobalField { type SFShort RIDGE            2 }
 DEF UF-OR2              GlobalField { type SFFloat OR2              0 }
 
@@ -63,7 +63,7 @@ DEF UF-POSY10           GlobalField { type SFFloat POSY10           0 }
 DEF UF-LEN10            GlobalField { type SFFloat LEN10          60 }
 DEF UF-WID10            GlobalField { type SFFloat WID10          60 }
 DEF UF-COL10            GlobalField { type SFColor COL10      75 75 75 }
-DEF UF-OR10             GlobalField { type SFFloat OR10             90 }
+DEF UF-OR10             GlobalField { type SFFloat OR10             0 }
 DEF UF-BLINK10          GlobalField { type SFShort BLINK10          0 }
 DEF UF-BLINKFREQ10      GlobalField { type SFFloat BLINKFREQ10      2 }
 DEF UF-SHUTTLETYPE10    GlobalField { type SFShort SHUTTLETYPE10    0 }
@@ -354,8 +354,8 @@ Separator {
         	    Switch {
         	        whichChild = USE UF-OFLIP.OFLIP
 
+                  # OFLIP 0
         	        Group {
-
         	            #object 1
         	            DEF Object1 Switch {
         	                whichChild = DEF FigOn Calculator {
@@ -419,7 +419,7 @@ Separator {
         	                            d = USE UF-OR2.OR2
         	                            e = USE UF-AUTOOR.AUTOOR
         	                            h = USE UF-OVERLAP.OVERLAP
-        	                            expression[ "ta = (e==0?a+b:c+d) * 0.0174532925",
+        	                            expression[ "ta = (e==0?a+b:c+d+180) * 0.0174532925",
         	                                "oa = (h == 1 ? (c + d + 180) * 0.0174532925 : ta)" ]
         	                        }.oa
         	                    }
@@ -555,7 +555,7 @@ Separator {
         	                                    d = USE OverlapX10.oa
         	                                    A = USE UF-ORIGIN.ORIGIN
         	                                    expression[ "oA[0] = (-A[0] * b / 2.0) - 2*(a==1?d:0)",
-        	                                        "oA[1] = A[1] * c / 2.0" ]
+        	                                        "oA[1] = -A[1] * c / 2.0" ]
         	                                }.oA
         	                            }
         	                            TabFigure3 {
@@ -588,7 +588,7 @@ Separator {
         	                                    c = USE WID0.WID0
         	                                    A = USE UF-ORIGIN.ORIGIN
         	                                    expression[ "oA[0] = -A[0] * b / 2.0",
-        	                                        "oA[1] = A[1] * c / 2.0" ]
+        	                                        "oA[1] = -A[1] * c / 2.0" ]
         	                                }.oA
         	                            }
 
@@ -679,9 +679,9 @@ Separator {
                                       }
         	                        } # end of C-Shape
 
-        	                    } # end of roof
-        	                } # end of figure on
-        	            } # end of StimLeft0
+        	                    } # end of shape object
+        	                } # end of blink on
+        	            } # end of object1
 
         	            DEF TransOver Translation {
         	                translation 0 0 1
@@ -857,7 +857,7 @@ Separator {
         	                                    d = USE OverlapX.oa
         	                                    A = USE UF-ORIGIN.ORIGIN
         	                                    expression[ "oA[0] = (-A[0] * b / 2.0) - 2*(a==1?d:0)",
-        	                                        "oA[1] = A[1] * c / 2.0" ]
+        	                                        "oA[1] = -A[1] * c / 2.0" ]
         	                                }.oA
         	                            }
         	                            TabFigure3 {
@@ -880,7 +880,7 @@ Separator {
         	                                    c = USE WID0.WID0
         	                                    A = USE UF-ORIGIN.ORIGIN
         	                                    expression[ "oA[0] = -A[0] * b / 2.0",
-        	                                        "oA[1] = A[1] * c / 2.0" ]
+        	                                        "oA[1] = -A[1] * c / 2.0" ]
         	                                }.oA
         	                            }
 
@@ -972,9 +972,11 @@ Separator {
         	                        } # end of C-Shape
 
         	                    } # end of roof
-        	                } # end of figure on
-        	            } # end of StimLeft0
+        	                } # end of blink
+        	            } # end of object0
         	        }
+
+                  # OFLIP 1
         	        Group {
         	            USE Object0
         	            USE TransOver
@@ -982,8 +984,11 @@ Separator {
         	        }
         	    }
             } # end of StimLeft0
+
+            # no StimLeft1
+
         } #end of left object
-    } #end of left figure
+    } # end of left figure
 
 
 

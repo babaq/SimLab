@@ -262,7 +262,7 @@ Separator {
 			    a = USE FT0LEN.FT0LEN
 			    b = USE FT0WID.FT0WID
 			    A = USE FT0ORIGIN.FT0ORIGIN
-			expression["oA[0]=A[0]*(a/2.0)","oA[1]=A[1]*(b/2.0)"]
+			expression["oA[0]=-A[0]*(a/2.0)","oA[1]=-A[1]*(b/2.0)"]
 			  }.oA
 			}
 				SoAllColor {
@@ -296,7 +296,7 @@ Separator {
 			  translation = Calculator{
 			    a = USE FT1SIZ.FT1SIZ
 			    A = USE FT1ORIGIN.FT1ORIGIN
-			expression["oA[1]=A[1]*(a/2.0)*sin(30*0.0174532925)"]
+			expression["oA[1]=-A[1]*(a/2.0)"]
 			  }.oA
 			}
 			SoAllColor {
@@ -330,7 +330,7 @@ Separator {
 			  translation = Calculator{
 			    a = USE FT2SIZ.FT2SIZ
 			    A = USE FT2ORIGIN.FT2ORIGIN
-			expression["oA[0]=A[0]*(a/2.0)","oA[1]=A[1]*(a/2.0)"]
+			expression["oA[0]=-A[0]*(a/2.0)","oA[1]=-A[1]*(a/2.0)"]
 			  }.oA
 			}
 				RotationXYZ {
