@@ -1,6 +1,7 @@
 #Inventor V2.1 ascii
 # Foraging Visual Search Task
-
+#
+# 02/08/2015, add grating mask
 
 DEF CAMERAHEIGHT GlobalField {type SFFloat CAMERAHEIGHT 1200}
 DEF ANTIALIAS GlobalField {type SFShort ANTIALIAS 1}
@@ -13,7 +14,7 @@ DEF MBCOL GlobalField {type SFShort MBCOL 0}
 DEF CURSOR GlobalField {type SFLong CURSOR 0}
 DEF CPOSH GlobalField {type SFFloat CPOSH 0}
 DEF CPOSV GlobalField {type SFFloat CPOSV 0}
-DEF CPOSD GlobalField {type SFFloat CPOSD 30}
+DEF CPOSD GlobalField {type SFFloat CPOSD 40}
 DEF CCOL GlobalField {type SFColor CCOL 0 100 0}
 DEF CSIZ GlobalField {type SFFloat CSIZ 6}
 DEF CWID GlobalField {type SFFloat CWID 2}
@@ -24,7 +25,7 @@ DEF TPOSV GlobalField {type SFFloat TPOSV 0}
 DEF TARGET GlobalField {type SFLong TARGET 0}
 DEF FPOSH GlobalField {type SFFloat FPOSH 0}
 DEF FPOSV GlobalField {type SFFloat FPOSV 0}
-DEF FPOSD GlobalField {type SFFloat FPOSD 20}
+DEF FPOSD GlobalField {type SFFloat FPOSD 30}
 DEF FCCOL GlobalField {type SFColor FCCOL 100 100 100}
 DEF FCSIZ GlobalField {type SFFloat FCSIZ 6}
 DEF FCHEIGHT GlobalField {type SFFloat FCHEIGHT 2}
@@ -36,7 +37,20 @@ DEF FSHEIGHT GlobalField {type SFFloat FSHEIGHT 1}
 DEF CUE GlobalField {type SFLong CUE 0}
 DEF CUEPOSH GlobalField {type SFFloat CUEPOSH 0}
 DEF CUEPOSV GlobalField {type SFFloat CUEPOSV 0}
-DEF CUEPOSD GlobalField {type SFFloat CUEPOSD 10}
+DEF CUEPOSD GlobalField {type SFFloat CUEPOSD 20}
+
+#@ Mask
+DEF MASK GlobalField {type SFLong MASK 0}
+DEF MASKTYPE GlobalField {type SFFloat MASKTYPE 0}
+DEF MASKLEN GlobalField {type SFFloat MASKLEN 2500}
+DEF MASKWID GlobalField {type SFFloat MASKWID 2500}
+DEF MASKDEPTH GlobalField {type SFFloat MASKDEPTH 10}
+DEF GRSPHASE GlobalField {type SFFloat GRSPHASE 0 }
+DEF GRDRIFT  GlobalField { type SFShort GRDRIFT 0 }
+DEF GRDRIFTFREQ  GlobalField { type SFFloat GRDRIFTFREQ 1 }
+DEF GRCYCLEWID GlobalField {type SFFloat GRCYCLEWID 25}
+DEF MASKOR GlobalField {type SFFloat MASKOR 0 }
+DEF MASKOR2 GlobalField {type SFFloat MASKOR2 0 }
 
 #@ Figure Array
 DEF FIGURE GlobalField {type SFLong FIGURE 0}
@@ -85,8 +99,8 @@ DEF REWARDIDX GlobalField {type SFFloat REWARDIDX 0}
 
 #@ Figure Type 0: Rectangle
 DEF FT0COL GlobalField {type SFColor FT0COL 100 100 100}
-DEF FT0LEN GlobalField {type SFFloat FT0LEN 60}
-DEF FT0WID GlobalField {type SFFloat FT0WID 60}
+DEF FT0LEN GlobalField {type SFFloat FT0LEN 120}
+DEF FT0WID GlobalField {type SFFloat FT0WID 120}
 DEF FT0DEPTH GlobalField {type SFFloat FT0DEPTH 0}
 DEF FT0OR GlobalField {type SFFloat FT0OR 0 }
 DEF FT0OR2 GlobalField {type SFFloat FT0OR2 0 }
@@ -94,7 +108,7 @@ DEF FT0ORIGIN GlobalField {type SFVec3f FT0ORIGIN 0 0 0 }
 
 #@ Figure Type 1: Equilateral Triangle
 DEF FT1COL GlobalField {type SFColor FT1COL 100 100 100}
-DEF FT1SIZ GlobalField {type SFFloat FT1SIZ 60}
+DEF FT1SIZ GlobalField {type SFFloat FT1SIZ 120}
 DEF FT1HEIGHT GlobalField {type SFFloat FT1HEIGHT 0}
 DEF FT1OR GlobalField {type SFFloat FT1OR 0 }
 DEF FT1OR2 GlobalField {type SFFloat FT1OR2 0 }
@@ -102,7 +116,7 @@ DEF FT1ORIGIN GlobalField {type SFVec3f FT1ORIGIN 0 0 0 }
 
 #@ Figure Type 2: Circle
 DEF FT2COL GlobalField {type SFColor FT2COL 100 100 100}
-DEF FT2SIZ GlobalField {type SFFloat FT2SIZ 60}
+DEF FT2SIZ GlobalField {type SFFloat FT2SIZ 120}
 DEF FT2HEIGHT GlobalField {type SFFloat FT2HEIGHT 0}
 DEF FT2OR GlobalField {type SFFloat FT2OR 0 }
 DEF FT2OR2 GlobalField {type SFFloat FT2OR2 0 }
@@ -360,6 +374,89 @@ Separator {
 	  }
     }
 }
+
+# Mask
+Separator {
+  Switch{
+    whichChild = USE MASK.MASK
+    Group{}
+    Group{
+      Separator{
+        Switch{
+          whichChild = USE MASKTYPE.MASKTYPE
+          # Mask Type 0
+          Group{
+              Separator {
+                Translation {
+                  translation = Calculator {
+                    a = USE MASKOR.MASKOR
+                    b = USE MASKOR2.MASKOR2
+                    c = USE GRSPHASE.GRSPHASE
+                    d = USE MASKDEPTH.MASKDEPTH
+                    e = USE GRCYCLEWID.GRCYCLEWID
+                    f = TimeCounter {
+                      min        -128
+                      max        128
+                      step       1
+                      on         = USE GRDRIFT.GRDRIFT
+                      frequency = USE GRDRIFTFREQ.GRDRIFTFREQ
+                      duty       1
+                      reset = USE RESET.RESET
+                      }.output
+                    expression["ta=(a+b)*0.0174532925",
+                               "oA[0]=-sin(ta)*e*(c+f/256.0)","oA[1]=cos(ta)*e*(c+f/256.0)",
+                               "oA[2] = d"]
+                    }.oA
+                  }
+                DEF MaskOR RotationXYZ{
+                  axis Z
+                  angle = Calculator{
+                    a = USE MASKOR.MASKOR
+                    b = USE MASKOR2.MASKOR2
+                    expression["oa=(a+b)*0.0174532925"]
+                    }.oa
+                  }
+              MaterialBinding {
+                value PER_PART
+                }
+              Coordinate3 {
+                point = DEF GR Grating {
+                  length = USE MASKLEN.MASKLEN
+                  width = USE MASKWID.MASKWID
+                  grades 2
+                  cyclewidth = USE GRCYCLEWID.GRCYCLEWID
+                  }.points
+                }
+#                 Material{
+#                 ambientColor = Calculator {
+#                   A = USE FT0Col.oA
+#                   B = USE BCol.oA
+#                   a = USE GR.midpoints
+#                   expression ["oA = B + (A-B)*(a*4-1)"]
+#                   }.oA
+#                 transparency 0
+#                 }
+              SoAllColor {
+                color = Calculator {
+                  A = USE FT0Col.oA
+                  B = USE BCol.oA
+                  a = USE GR.midpoints
+                  expression ["oA = B + (A-B)*(a*4-1)"]
+                  }.oA
+                }
+              TriangleStripSet {
+                numVertices = USE GR.strips
+                }
+            }
+          }
+          # Mask Type 1
+          Group{
+            }
+          }
+        }
+      }
+    }
+  }
 
 # Figure Array
 Separator {
